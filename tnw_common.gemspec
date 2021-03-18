@@ -7,8 +7,8 @@ require 'tnw_common/version'
 Gem::Specification.new do |spec|
   spec.name          = 'tnw_common'
   spec.version       = TnwCommon::VERSION
-  spec.authors       = ['Frank Feng']
-  spec.email         = ['frank.feng@york.ac.uk']
+  spec.authors       = ['Frank Feng', 'Sebastian Palucha']
+  spec.email         = ['frank.feng@york.ac.uk', 'sebastian.palucha@york.ac.uk']
 
   spec.summary       = 'TNW Common module.'
   spec.description   = 'TNW Common provides re-usable modules, functions and other services for The Northern Way applications.'

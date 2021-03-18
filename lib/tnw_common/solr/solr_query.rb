@@ -5,11 +5,12 @@ require 'rsolr'
 module TnwCommon
     module Solr
         class SolrQuery
-            #CONN = RSolr.connect :url => SOLR[Rails.env]['url']
-            @@conn = RSolr.connect :url => 'http://localhost:8983/solr/archbishops'
+            def initialize(solr_url)
+                @conn = RSolr.connect :url => solr_url
+            end
 
-            def self.query(q, fl='id', rows=10, sort='', start=0 )
-                @@conn.get 'select', :params => {
+            def query(q, fl='id', rows=10, sort='', start=0 )
+                @conn.get 'select', :params => {
                     :q=>q,
                     :fl=>fl,
                     :rows=>rows,
