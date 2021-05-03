@@ -1,3 +1,8 @@
 .idea
 .env
 .ruby-version
+
+# Local bundle files
+.bundle
+vendor
+
