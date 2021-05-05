@@ -210,7 +210,7 @@ module TnwCommon
             @element_array << get_element(result["note_tesim"], search_term: search_term)
             @element_array << get_element(result["editorial_note_tesim"], search_term: search_term)
             @element_array << get_element(result["is_referenced_by_tesim"], search_term: search_term)
-            # FixMe refactoring question - get_places calls get_element. It expects search_term: 
+            # FixMe refactoring question - get_places calls get_element. It expects search_term:
             get_places(entry_id, search_term2, search_term: search_term)
             get_people(entry_id, search_term2)
             get_dates(entry_id, search_term2)
@@ -459,7 +459,7 @@ module TnwCommon
       )
         place_string = ""
         unless place_role_string.nil? || (place_role_string == ["unknown"])
-          # FixMe Refactoring question - Why get_element requires return string here but not in other places? 
+          # FixMe Refactoring question - Why get_element requires return string here but not in other places?
           place_string += "#{get_element(place_role_string, true, search_term: search_term).capitalize}: "
         end
         if place_same_as_string.nil?
