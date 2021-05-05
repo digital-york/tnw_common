@@ -18,6 +18,20 @@ module TnwCommon
                     :start=>start
                 }
             end
+            def solr_query(q, fl='id', rows=0, sort='', start=0,facet=false,limit=nil,f_sort=nil,field=nil, fq=nil)
+                @conn.get 'select', :params => {
+                                     :q=>q,
+                                     :fl=>fl,
+                                     :rows=>rows,
+                                     :sort=>sort,
+                                     :start=>start,
+                                     :facet=>facet,
+                                     'facet.limit'=>limit,
+                                     'facet.sort'=>f_sort,
+                                     'facet.field'=>field, #supply a string or an array
+                                    :fq=>fq #supply a string or an array
+                                 }
+              end
         end
     end
 end
