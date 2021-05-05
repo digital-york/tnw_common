@@ -5,6 +5,10 @@ require "pry"
 module TnwCommon
   module Services
     module Solr
+      def number
+        5
+      end
+
       # Sets the facet arrays and search results according to the search term
       def set_search_result_arrays(search_term: sub = nil)
         @section_type_facet_hash = Hash.new 0
