@@ -210,7 +210,8 @@ module TnwCommon
             @element_array << get_element(result["note_tesim"], search_term: search_term)
             @element_array << get_element(result["editorial_note_tesim"], search_term: search_term)
             @element_array << get_element(result["is_referenced_by_tesim"], search_term: search_term)
-            get_places(entry_id, search_term2)
+            # FixMe refactoring question - get_places calls get_element. It expects search_term: 
+            get_places(entry_id, search_term2, search_term: search_term)
             get_people(entry_id, search_term2)
             get_dates(entry_id, search_term2)
             @partial_list_array << @element_array
@@ -416,7 +417,7 @@ module TnwCommon
       end
 
       # Get the place data from solr for a particular entry_id and search term (see above method call)
-      def get_places(entry_id, search_term2)
+      def get_places(entry_id, search_term2, search_term:)
         q = "relatedPlaceFor_ssim:#{entry_id} "
         if @display_type == "matched records"
           q = "relatedPlaceFor_ssim:#{entry_id} AND (place_as_written_search:*#{search_term2}* or place_role_search:*#{search_term2}* or place_type_search:*#{search_term2}* or place_note_search:*#{search_term2}* or place_same_as_search:*#{search_term2}*)"
@@ -426,12 +427,13 @@ module TnwCommon
         # place_note_string = ''
         temp_array = []
 
-        SolrQuery.new.solr_query(q, fl, 1000)["response"]["docs"].map do |result|
+        @query.solr_query(q, fl, 1000)["response"]["docs"].map do |result|
           place_string = get_place_string(
             result["place_as_written_tesim"],
             result["place_role_facet_ssim"],
             result["place_type_facet_ssim"],
-            result["place_same_as_facet_ssim"]
+            result["place_same_as_facet_ssim"],
+            search_term: search_term
           )
           # If 'matched records' is selected, get the places, agents and dates if search results have been found above
           if @display_type == "matched records"
@@ -452,26 +454,28 @@ module TnwCommon
         place_as_written_string,
         place_role_string,
         place_type_string,
-        place_same_as_string
+        place_same_as_string,
+        search_term:
       )
         place_string = ""
         unless place_role_string.nil? || (place_role_string == ["unknown"])
-          place_string += "#{get_element(place_role_string, true).capitalize}: "
+          # FixMe Refactoring question - Why get_element requires return string here but not in other places? 
+          place_string += "#{get_element(place_role_string, true, search_term: search_term).capitalize}: "
         end
         if place_same_as_string.nil?
           unless place_as_written_string.nil?
-            place_string += get_element(place_as_written_string, true)
+            place_string += get_element(place_as_written_string, true, search_term: search_term)
           end
           unless place_type_string.nil? || (place_type_string == ["unknown"])
-            place_string += " (#{get_element(place_type_string, true)})"
+            place_string += " (#{get_element(place_type_string, true, search_term: search_term)})"
           end
         else
-          place_string += get_element(place_same_as_string)
+          place_string += get_element(place_same_as_string, search_term: search_term)
           unless place_type_string.nil? || (place_type_string == ["unknown"])
-            place_string += " (#{get_element(place_type_string, true)})"
+            place_string += " (#{get_element(place_type_string, true, search_term: search_term)})"
           end
           unless place_as_written_string.nil?
-            place_string += "; written as #{get_element(place_as_written_string, true)}"
+            place_string += "; written as #{get_element(place_as_written_string, true, search_term: search_term)}"
           end
         end
         place_string
