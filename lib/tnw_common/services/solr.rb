@@ -6,7 +6,7 @@ module TnwCommon
   module Services
     module Solr
       # Sets the facet arrays and search results according to the search term
-      def set_search_result_arrays(sub = nil)
+      def set_search_result_arrays(search_term: sub = nil)
         @section_type_facet_hash = Hash.new 0
         @person_same_as_facet_hash = Hash.new 0
         @place_same_as_facet_hash = Hash.new 0
@@ -20,10 +20,10 @@ module TnwCommon
         query = SolrQuery.new
         @query = SolrQuery.new
 
-        search_term2 = if @search_term.include?(" ") || @search_term.include?("*")
-          "(" + @search_term.downcase + ")"
+        search_term2 = if search_term.include?(" ") || search_term.include?("*")
+          "(" + search_term.downcase + ")"
         else
-          "(*" + @search_term.downcase + "*)"
+          "(*" + search_term.downcase + "*)"
         end
 
         # ENTRIES: Get the matching entry ids and facets
