@@ -10,7 +10,7 @@ module TnwCommon
       end
 
       # Sets the facet arrays and search results according to the search term
-      def set_search_result_arrays(search_term: sub = nil)
+      def set_search_result_arrays(sub = nil, search_term:, page: 1, rows_per_page: 10)
         @section_type_facet_hash = Hash.new 0
         @person_same_as_facet_hash = Hash.new 0
         @place_same_as_facet_hash = Hash.new 0
@@ -181,7 +181,7 @@ module TnwCommon
         @number_of_rows = entry_id_set.size
 
         # Get the data for one page only, e.g. 10 rows
-        entry_id_array = entry_id_set.to_a.slice((@page - 1) * @rows_per_page, @rows_per_page)
+        entry_id_array = entry_id_set.to_a.slice((page - 1) * rows_per_page, rows_per_page)
 
         # Iterate over the 10 (or less) entries and get all the data to display
         # Also highlight the search term
