@@ -21,8 +21,8 @@ module TnwCommon
         entry_id_set = Set.new
         facets = facet_fields
 
-        query = SolrQuery.new
-        @query = SolrQuery.new
+        query = TnwCommon::Solr::SolrQuery.new("http://127.0.0.1:8983/solr/archbishops")
+        @query = TnwCommon::Solr::SolrQuery.new("http://127.0.0.1:8983/solr/archbishops")
 
         search_term2 = if search_term.include?(" ") || search_term.include?("*")
           "(" + search_term.downcase + ")"
