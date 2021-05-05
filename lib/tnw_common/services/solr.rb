@@ -581,14 +581,13 @@ module TnwCommon
 
       def get_dates(entry_id, search_term2)
         # entry date
-        query = SolrQuery.new
         fl = "id, date_note_tesim, date_role_facet_ssim"
         fl_single = "id, date_tesim,date_type_tesim, date_certainty_tesim"
         tmp_array = []
 
         if @display_type == "matched records"
           q = "entryDateFor_ssim:#{entry_id} AND (date_note_search:*#{search_term2}* OR date_role_search:*#{search_term2}*)"
-          num = query.solr_query(q, "id", 0)["response"]["numFound"].to_i
+          num = @query.solr_query(q, "id", 0)["response"]["numFound"].to_i
           q = "entryDateFor_ssim:#{entry_id}" if num == 0
           query.solr_query(q, fl, 1)["response"]["docs"].map do |result|
             date_array = []
@@ -596,9 +595,9 @@ module TnwCommon
             date_note_string = result["date_note_tesim"]
             # single dates
             q = "dateFor_ssim:#{result["id"]} AND (date_certainty_tesim:*#{search_term2}* OR date_tesim:*#{search_term2}*)"
-            num = query.solr_query(q, "id", 0)["response"]["numFound"].to_i
+            num = @query.solr_query(q, "id", 0)["response"]["numFound"].to_i
             q = "dateFor_ssim:#{result["id"]}" if num == 0
-            query.solr_query(q, fl_single, num)["response"]["docs"].map do |result2|
+            @query.solr_query(q, fl_single, num)["response"]["docs"].map do |result2|
               date_array << result2
             end
             # If 'matched records' is selected, get the places, agents and dates if search results have been found above
@@ -612,16 +611,16 @@ module TnwCommon
           date_role_string = ""
           date_note_string = ""
           # entry dates
-          num = query.solr_query(q, "id", 0)["response"]["numFound"].to_i
-          query.solr_query("entryDateFor_ssim:#{entry_id}", fl, num)["response"]["docs"].map do |result|
+          num = @query.solr_query(q, "id", 0)["response"]["numFound"].to_i
+          @query.solr_query("entryDateFor_ssim:#{entry_id}", fl, num)["response"]["docs"].map do |result|
             date_role_string = result["date_role_facet_ssim"]
             date_note_string = result["date_note_tesim"]
             date_array = []
             # single dates
             entry_id2 = result["id"]
             q = "dateFor_ssim:#{entry_id2}"
-            num = query.solr_query(q, "id", 0)["response"]["numFound"].to_i
-            query.solr_query(q, fl_single, num)["response"]["docs"].map do |result2|
+            num = @query.solr_query(q, "id", 0)["response"]["numFound"].to_i
+            @query.solr_query(q, fl_single, num)["response"]["docs"].map do |result2|
               date_array << result2
             end
             tmp_array << get_date_string(date_role_string, date_note_string, date_array)
