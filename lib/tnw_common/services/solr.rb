@@ -213,7 +213,7 @@ module TnwCommon
             # FixMe refactoring question - get_places calls get_element. It expects search_term:
             get_places(entry_id, search_term2, search_term: search_term)
             get_people(entry_id, search_term2, search_term: search_term)
-            get_dates(entry_id, search_term2)
+            get_dates(entry_id, search_term2, search_term: search_term)
             @partial_list_array << @element_array
           end
         end
@@ -579,7 +579,7 @@ module TnwCommon
         person_string
       end
 
-      def get_dates(entry_id, search_term2)
+      def get_dates(entry_id, search_term2, search_term:)
         # entry date
         fl = "id, date_note_tesim, date_role_facet_ssim"
         fl_single = "id, date_tesim,date_type_tesim, date_certainty_tesim"
@@ -623,7 +623,7 @@ module TnwCommon
             @query.solr_query(q, fl_single, num)["response"]["docs"].map do |result2|
               date_array << result2
             end
-            tmp_array << get_date_string(date_role_string, date_note_string, date_array)
+            tmp_array << get_date_string(date_role_string, date_note_string, date_array, search_term: search_term)
           end
         end
         @element_array << tmp_array
@@ -636,35 +636,36 @@ module TnwCommon
       def get_date_string(
         date_role_string,
         date_note_string,
-        date_array
+        date_array,
+        search_term:
       )
 
         date_string = ""
         unless date_role_string.nil? || (date_role_string == ["unknown"])
-          date_string += "#{get_element(date_role_string, true).capitalize}: "
+          date_string += "#{get_element(date_role_string, true, search_term: search_term).capitalize}: "
         end
         unless date_array.nil? || (date_array == [])
           date_array.each do |result|
             if !result["date_type_tesim"].nil?
               if result["date_type_tesim"].join == "single"
-                date_string += get_element(result["date_tesim"], true)
-                date_string += " (#{get_element(result["date_certainty_tesim"], true)})"
+                date_string += get_element(result["date_tesim"], true, search_term: search_term)
+                date_string += " (#{get_element(result["date_certainty_tesim"], true, search_term: search_term)})"
               elsif result["date_type_tesim"].join == "start"
-                date_string += get_element(result["date_tesim"])
-                date_string += " (#{get_element(result["date_certainty_tesim"], true)}) - "
+                date_string += get_element(result["date_tesim"], search_term: search_term)
+                date_string += " (#{get_element(result["date_certainty_tesim"], true, search_term: search_term)}) - "
               elsif result["date_type_tesim"].join == "end"
-                date_string += get_element(result["date_tesim"])
-                date_string += " (#{get_element(result["date_certainty_tesim"], true)})"
+                date_string += get_element(result["date_tesim"], search_term: search_term)
+                date_string += " (#{get_element(result["date_certainty_tesim"], true, search_term: search_term)})"
               end
             else
-              date_string += get_element(result["date_tesim"], true)
-              date_string += " (#{get_element(result["date_certainty_tesim"], true)})"
+              date_string += get_element(result["date_tesim"], true, search_term: search_term)
+              date_string += " (#{get_element(result["date_certainty_tesim"], true, search_term: search_term)})"
             end
           end
         end
         unless date_note_string.nil?
           date_string += "; Note: " unless date_string.end_with? ": "
-          date_string += get_element(date_note_string, true).capitalize.to_s
+          date_string += get_element(date_note_string, true, search_term: search_term).capitalize.to_s
         end
         # This should only happen with matched records, where there is only a role; we do not want to show this
         if date_string.include? "; Note:"
