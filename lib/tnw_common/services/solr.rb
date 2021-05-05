@@ -192,7 +192,7 @@ module TnwCommon
 
           query.solr_query(q, fl, 1)["response"]["docs"].map do |result|
             # Display all the text if not 'matched records'
-            @match_term = @search_term
+            @match_term = search_term
             if @match_term == "" || @display_type == "full display" || @display_type == "summary"
               @match_term = ".*"
             end
@@ -201,15 +201,15 @@ module TnwCommon
             @element_array = []
             @element_array << entry_id
             get_entry_and_folio_details(entry_id)
-            @element_array << get_element(result["entry_type_facet_ssim"])
-            @element_array << get_element(result["section_type_facet_ssim"])
-            @element_array << get_element(result["summary_tesim"])
-            @element_array << get_element(result["marginalia_tesim"])
-            @element_array << get_element(result["language_facet_ssim"])
-            @element_array << get_element(result["subject_facet_ssim"])
-            @element_array << get_element(result["note_tesim"])
-            @element_array << get_element(result["editorial_note_tesim"])
-            @element_array << get_element(result["is_referenced_by_tesim"])
+            @element_array << get_element(result["entry_type_facet_ssim"], search_term: search_term)
+            @element_array << get_element(result["section_type_facet_ssim"], search_term: search_term)
+            @element_array << get_element(result["summary_tesim"], search_term: search_term)
+            @element_array << get_element(result["marginalia_tesim"], search_term: search_term)
+            @element_array << get_element(result["language_facet_ssim"], search_term: search_term)
+            @element_array << get_element(result["subject_facet_ssim"], search_term: search_term)
+            @element_array << get_element(result["note_tesim"], search_term: search_term)
+            @element_array << get_element(result["editorial_note_tesim"], search_term: search_term)
+            @element_array << get_element(result["is_referenced_by_tesim"], search_term: search_term)
             get_places(entry_id, search_term2)
             get_people(entry_id, search_term2)
             get_dates(entry_id, search_term2)
@@ -378,7 +378,7 @@ module TnwCommon
 
       # Helper method to check if terms match the search term and if so, whether to put a comma in front of it
       # i.e. this is required if it is not the first term in the string
-      def get_element(input_array, return_string = nil)
+      def get_element(input_array, return_string = nil, search_term:)
         begin
           str = ""
           is_match = false
@@ -395,15 +395,15 @@ module TnwCommon
             # The following code highlights text which matches the search_term
             # It highlights all combinations, e.g. 'york', 'York', 'YORK', 'paul young', 'paul g', etc
             # if (is_match == true) && (@search_term != '')
-            if (is_match == true) && (@search_term != "") && !@search_term.downcase.include?("*")
+            if (is_match == true) && (search_term != "") && !search_term.downcase.include?("*")
               # Replace all spaces with '.*' so that it searches for all characters in between text, e.g. 'paul y' will find 'paul young'
               # temp = @search_term.gsub(/\s+/, '.*')
               # remove double quotes
-              temp = @search_term.delete('"').gsub(/\s+/, ".*")
+              temp = search_term.delete('"').gsub(/\s+/, ".*")
               str = str.gsub(/#{temp}/i) do |term|
                 "<span class=\'highlight_text\'>#{term}</span>"
               end
-            elsif (is_match == false) && (@search_term != "")
+            elsif (is_match == false) && (search_term != "")
               str = "" if return_string.nil?
             end
           end
