@@ -214,7 +214,8 @@ module TnwCommon
             get_places(entry_id, search_term2, search_term: search_term)
             get_people(entry_id, search_term2, search_term: search_term)
             get_dates(entry_id, search_term2, search_term: search_term)
-            @partial_list_array << @element_array
+            #FixMe refactoring question - How we should return other instance variables e.g. @*_facet_hash
+            @element_array
           end
         end
       rescue => error
