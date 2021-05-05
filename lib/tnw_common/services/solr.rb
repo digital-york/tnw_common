@@ -212,7 +212,7 @@ module TnwCommon
             @element_array << get_element(result["is_referenced_by_tesim"], search_term: search_term)
             # FixMe refactoring question - get_places calls get_element. It expects search_term:
             get_places(entry_id, search_term2, search_term: search_term)
-            get_people(entry_id, search_term2)
+            get_people(entry_id, search_term2, search_term: search_term)
             get_dates(entry_id, search_term2)
             @partial_list_array << @element_array
           end
@@ -482,7 +482,7 @@ module TnwCommon
       end
 
       # Get the person data from solr for a particular entry_id and search term (see above method call)
-      def get_people(entry_id, search_term2)
+      def get_people(entry_id, search_term2, search_term:)
         q = "relatedAgentFor_ssim:#{entry_id}"
         if @display_type == "matched records"
           q = "relatedAgentFor_ssim:#{entry_id} AND (person_as_written_search:*#{search_term2}* or person_role_search:*#{search_term2}* or person_descriptor_search:*#{search_term2}* or person_descriptor_same_as_search:*#{search_term2}* or person_note_search:*#{search_term2}* or person_same_as_search:*#{search_term2}* or person_related_place_search:*#{search_term2}* or person_related_person_search:*#{search_term2}*)"
@@ -500,7 +500,8 @@ module TnwCommon
             result["person_same_as_facet_ssim"],
             result["person_related_place_tesim"],
             result["person_related_person_tesim"],
-            result["person_note_tesim"]
+            result["person_note_tesim"],
+            search_term: search_term
           )
           # If 'matched records' is selected, get the places, agents and dates if search results have been found above
           if @display_type == "matched records"
@@ -533,7 +534,8 @@ module TnwCommon
         person_same_as_string,
         person_related_place_string,
         person_related_person_string,
-        person_note_string
+        person_note_string,
+        search_term:
       )
 
         person_string = ""
@@ -542,37 +544,37 @@ module TnwCommon
         unless person_role_string.nil?
           if person_role_string == ["unknown"]
             unless person_note_string.nil? && person_note_string.include?("Role: ")
-              person_string += "#{get_element(person_note_string, true).gsub("Role: ", "").capitalize}: "
+              person_string += "#{get_element(person_note_string, true, search_term: search_term).gsub("Role: ", "").capitalize}: "
             end
           else
-            person_string += "#{get_element(person_role_string, true).capitalize}: "
+            person_string += "#{get_element(person_role_string, true, search_term: search_term).capitalize}: "
           end
         end
         if person_same_as_string.nil?
           unless person_as_written_string.nil?
-            person_string += get_element(person_as_written_string, true)
+            person_string += get_element(person_as_written_string, true, search_term: search_term)
           end
           unless person_descriptor_string.nil?
             person_string += if (person_string == "") || person_string.end_with?(": ")
-              get_element(person_descriptor_string, true).capitalize.to_s
+              get_element(person_descriptor_string, true, search_term: search_term).capitalize.to_s
             else
-              " (#{get_element(person_descriptor_string, true)})"
+              " (#{get_element(person_descriptor_string, true, search_term: search_term)})"
             end
           end
         else
-          person_string += get_element(person_same_as_string, true)
+          person_string += get_element(person_same_as_string, true, search_term: search_term)
           unless person_descriptor_string.nil?
-            person_string += " (#{get_element(person_descriptor_string, true)})"
+            person_string += " (#{get_element(person_descriptor_string, true, search_term: search_term)})"
           end
           unless person_as_written_string.nil?
-            person_string += "; written as #{get_element(person_as_written_string, true)}"
+            person_string += "; written as #{get_element(person_as_written_string, true, search_term: search_term)}"
           end
         end
         unless person_related_place_string.nil?
-          person_string += "; related places: #{get_element(person_related_place_string, true)}"
+          person_string += "; related places: #{get_element(person_related_place_string, true, search_term: search_term)}"
         end
         unless person_related_person_string.nil?
-          person_string += "; related people: #{get_element(person_related_person_string, true)}"
+          person_string += "; related people: #{get_element(person_related_person_string, true, search_term: search_term)}"
         end
         person_string
       end
