@@ -492,7 +492,7 @@ module TnwCommon
         # not currently including person_descriptor_as_written and person_note
         temp_array = []
 
-        SolrQuery.new.solr_query(q, fl, 1000)["response"]["docs"].map do |result|
+        @query.solr_query(q, fl, 1000)["response"]["docs"].map do |result|
           person_string = get_person_string(
             result["person_as_written_tesim"],
             result["person_role_facet_ssim"],
