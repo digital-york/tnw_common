@@ -1,14 +1,11 @@
 require "tnw_common/solr/solr_query"
 require "pry"
+require "pry-byebug"
 
 # This class report duplicate places
 module TnwCommon
   module Services
     module Solr
-      def number
-        5
-      end
-
       # Sets the facet arrays and search results according to the search term
       def set_search_result_arrays(sub = nil, search_term:, page: 1, rows_per_page: 10)
         @section_type_facet_hash = Hash.new 0
@@ -17,6 +14,8 @@ module TnwCommon
         @subject_facet_hash = Hash.new 0
         @date_facet_hash = Hash.new 0
         @register_facet_hash = Hash.new 0
+        # Index page display search data as returned in this array
+        @partial_list_array = []
 
         entry_id_set = Set.new
         facets = facet_fields
@@ -215,9 +214,10 @@ module TnwCommon
             get_people(entry_id, search_term2, search_term: search_term)
             get_dates(entry_id, search_term2, search_term: search_term)
             #FixMe refactoring question - How we should return other instance variables e.g. @*_facet_hash
-            @element_array
+            @partial_list_array << @element_array.flatten
           end
         end
+        @partial_list_array
       rescue => error
         log_error(__method__, __FILE__, error)
         raise
