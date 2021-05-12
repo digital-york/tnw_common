@@ -66,7 +66,15 @@ RSpec.describe TnwCommon::Services::Solr do
         ["Document date: 1310/08/08 (certain)"]]]
   }
 
-  it "returns search results" do
-    expect(controller.set_search_result_arrays(search_term: "Brandon", display_type: "full display")).to eq(brandon_search_array)
+  describe "When returns search results" do
+    let (:search_result_arrays) { controller.set_search_result_arrays(search_term: "Brandon", display_type: "full display") }
+    context "with full display" do
+      it "matches Registers IDs" do
+        expect(search_result_arrays[0][0]).to eq(brandon_search_array[0][0])
+        expect(search_result_arrays[1][0]).to eq(brandon_search_array[1][0])
+        expect(search_result_arrays[2][0]).to eq(brandon_search_array[2][0])
+      end
+    end
+    # expect(search_result_arrays).to eq(brandon_search_array)
   end
 end
