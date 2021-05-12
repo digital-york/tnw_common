@@ -357,16 +357,18 @@ module TnwCommon
       # This method uses the entry_id to get the title of the search result, i.e. 'Register Folio Entry' and folio_id
       def get_entry_and_folio_details(entry_id)
         # Get the entry_no and folio_id for the entry_id
+        # Use local array to rturn elements
+        element_array = []
         id = get_id(entry_id)
         query = TnwCommon::Solr::SolrQuery.new("http://127.0.0.1:8983/solr/archbishops")
         query.solr_query("id:" + id, "entry_no_tesim, entry_folio_facet_ssim, folio_ssim", 1)["response"]["docs"].map do |result|
           # SolrQuery.new.solr_query("id:" + id, "entry_no_tesim, entry_folio_facet_ssim, folio_ssim", 1)["response"]["docs"].map do |result|
-          @element_array << if result["entry_folio_facet_ssim"].nil? || result["entry_no_tesim"].nil?
+          element_array << if result["entry_folio_facet_ssim"].nil? || result["entry_no_tesim"].nil?
             "Untitled"
           else
             "#{result["entry_folio_facet_ssim"].join} entry #{result["entry_no_tesim"].join}"
           end
-          @element_array << result["folio_ssim"].join
+          element_array << result["folio_ssim"].join
         end
       rescue => error
         log_error(__method__, __FILE__, error)
