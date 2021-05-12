@@ -7,7 +7,7 @@ module TnwCommon
   module Services
     module Solr
       # Sets the facet arrays and search results according to the search term
-      def set_search_result_arrays(sub = nil, search_term:, page: 1, rows_per_page: 10)
+      def set_search_result_arrays(sub = nil, search_term:, display_type:, page: 1, rows_per_page: 10)
         @section_type_facet_hash = Hash.new 0
         @person_same_as_facet_hash = Hash.new 0
         @place_same_as_facet_hash = Hash.new 0
@@ -191,8 +191,12 @@ module TnwCommon
 
           query.solr_query(q, fl, 1)["response"]["docs"].map do |result|
             # Display all the text if not 'matched records'
+            # *Explanation:* _display_type_ parameter is used to set a value for @match_term parameter as used to match
+            # search text for highlight result. 
+            # @match_term set to search phrase for _display_type = "matched record" otherwise ".*"
+            # Refactoring idea: Requires refactoring to presenter Rails pattern. Return search result text and partial use presenter method to modify the highlight/display without query Sorl each time.
             @match_term = search_term
-            if @match_term == "" || @display_type == "full display" || @display_type == "summary"
+            if @match_term == "" || display_type == "full display" || display_type == "summary"
               @match_term = ".*"
             end
 
@@ -210,10 +214,10 @@ module TnwCommon
             @element_array << get_element(result["editorial_note_tesim"], search_term: search_term)
             @element_array << get_element(result["is_referenced_by_tesim"], search_term: search_term)
             # FixMe refactoring question - get_places calls get_element. It expects search_term:
-            get_places(entry_id, search_term2, search_term: search_term)
-            get_people(entry_id, search_term2, search_term: search_term)
-            get_dates(entry_id, search_term2, search_term: search_term)
-            #FixMe refactoring question - How we should return other instance variables e.g. @*_facet_hash
+            get_places(entry_id, search_term2, search_term: search_term, display_type: display_type)
+            get_people(entry_id, search_term2, search_term: search_term, display_type: display_type)
+            get_dates(entry_id, search_term2, search_term: search_term, display_type: display_type)
+            # FixMe refactoring question - How we should return other instance variables e.g. @*_facet_hash
             @partial_list_array << @element_array.flatten
           end
         end
@@ -260,6 +264,7 @@ module TnwCommon
         fq
       end
 
+      # Retrieve facet values from search results
       def facet_hash(solr_result)
         unless solr_result["facet_counts"]["facet_fields"]["subject_facet_ssim"].nil?
           @subject_facet_hash = Hash[*solr_result["facet_counts"]["facet_fields"]["subject_facet_ssim"].flatten(1)]
@@ -281,6 +286,7 @@ module TnwCommon
         end
       end
 
+      # Retrieve facet values from search results
       def add_facet_to_hash(solr_result)
         unless solr_result["facet_counts"]["facet_fields"]["subject_facet_ssim"].nil?
           solr_result["facet_counts"]["facet_fields"]["subject_facet_ssim"].each_with_index do |st, index|
@@ -420,9 +426,9 @@ module TnwCommon
       end
 
       # Get the place data from solr for a particular entry_id and search term (see above method call)
-      def get_places(entry_id, search_term2, search_term:)
+      def get_places(entry_id, search_term2, search_term:, display_type:)
         q = "relatedPlaceFor_ssim:#{entry_id} "
-        if @display_type == "matched records"
+        if display_type == "matched records"
           q = "relatedPlaceFor_ssim:#{entry_id} AND (place_as_written_search:*#{search_term2}* or place_role_search:*#{search_term2}* or place_type_search:*#{search_term2}* or place_note_search:*#{search_term2}* or place_same_as_search:*#{search_term2}*)"
         end
         fl = "id, place_as_written_tesim, place_role_facet_ssim, place_type_facet_ssim, place_note_tesim, place_same_as_facet_ssim"
@@ -439,7 +445,7 @@ module TnwCommon
             search_term: search_term
           )
           # If 'matched records' is selected, get the places, agents and dates if search results have been found above
-          if @display_type == "matched records"
+          if display_type == "matched records"
             temp_array << place_string if place_string.include? "span"
           else
             temp_array << place_string
@@ -485,9 +491,9 @@ module TnwCommon
       end
 
       # Get the person data from solr for a particular entry_id and search term (see above method call)
-      def get_people(entry_id, search_term2, search_term:)
+      def get_people(entry_id, search_term2, search_term:, display_type:)
         q = "relatedAgentFor_ssim:#{entry_id}"
-        if @display_type == "matched records"
+        if display_type == "matched records"
           q = "relatedAgentFor_ssim:#{entry_id} AND (person_as_written_search:*#{search_term2}* or person_role_search:*#{search_term2}* or person_descriptor_search:*#{search_term2}* or person_descriptor_same_as_search:*#{search_term2}* or person_note_search:*#{search_term2}* or person_same_as_search:*#{search_term2}* or person_related_place_search:*#{search_term2}* or person_related_person_search:*#{search_term2}*)"
         end
         fl = "id, person_as_written_tesim, person_role_facet_ssim, person_descriptor_facet_ssim, person_descriptor_as_written_tesim, person_note_tesim, person_same_as_facet_ssim, person_related_place_tesim, person_related_person_tesim"
@@ -507,7 +513,7 @@ module TnwCommon
             search_term: search_term
           )
           # If 'matched records' is selected, get the places, agents and dates if search results have been found above
-          if @display_type == "matched records"
+          if display_type == "matched records"
             temp_array << person_string if person_string.include? "span"
           else
             temp_array << person_string
@@ -582,13 +588,13 @@ module TnwCommon
         person_string
       end
 
-      def get_dates(entry_id, search_term2, search_term:)
+      def get_dates(entry_id, search_term2, search_term:, display_type:)
         # entry date
         fl = "id, date_note_tesim, date_role_facet_ssim"
         fl_single = "id, date_tesim,date_type_tesim, date_certainty_tesim"
         tmp_array = []
 
-        if @display_type == "matched records"
+        if display_type == "matched records"
           q = "entryDateFor_ssim:#{entry_id} AND (date_note_search:*#{search_term2}* OR date_role_search:*#{search_term2}*)"
           num = @query.solr_query(q, "id", 0)["response"]["numFound"].to_i
           q = "entryDateFor_ssim:#{entry_id}" if num == 0

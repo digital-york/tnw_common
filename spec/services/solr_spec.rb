@@ -67,6 +67,6 @@ RSpec.describe TnwCommon::Services::Solr do
   }
 
   it "returns search results" do
-    expect(controller.set_search_result_arrays(search_term: "Brandon")).to eq(brandon_search_array)
+    expect(controller.set_search_result_arrays(search_term: "Brandon", display_type: "full display")).to eq(brandon_search_array)
   end
 end
