@@ -8,7 +8,14 @@ describe TnwCommon::Tna::TnaSearch do
   tna_search = TnwCommon::Tna::TnaSearch.new(solr_server)
 
   it 'has a get_document_ids_from_series method' do
-    document_ids = tna_search.get_document_ids_from_series('1257b485h')
-    expect(document_ids).not_to be nil
+    # document_ids = tna_search.get_document_ids_from_series('1257b485h')
+    document_ids = tna_search.get_document_ids_from_series(nil)
+    expect(document_ids.length()).to eq(0)
+  end
+
+  it 'has a get_document_json method' do
+    # document_json = tna_search.get_document_json('gf06gf08h')
+    document_json = tna_search.get_document_json(nil)
+    expect(document_json).to eq('')
   end
 end

@@ -23,6 +23,23 @@ module TnwCommon
 
                 document_ids
             end
+
+            # return document json from a document id
+            def get_document_json(document_id)
+                document_json = ''
+
+                unless document_id.nil?
+                    q = "id:#{document_id}"
+                    fl = "id,repository_tesim,series_ssim,reference_tesim,summary_tesim,entry_date_note_tesim"
+                    fl += ",note_tesim,document_type_tesim,language_tesim,place_same_as_facet_ssim"
+                    fl += ",tna_addressees_tesim,tna_senders_tesim,tna_persons_tesim,first_date_full_ssim"
+                    @solr_server.query(q,fl)['response']['docs'].map do |r|
+                        document_json = r
+                    end
+                end
+
+                document_json
+            end
         end
     end
 end
