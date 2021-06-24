@@ -34,9 +34,14 @@ module TnwCommon
                         documents << {id: r['id'], reference: r['reference_tesim'][0]}
                     end
                 end
-                documents.sort! { |a, b|  a[1].to_i <=> b[1].to_i }
 
-                documents = documents.sort_by {|document| [document[:reference].split('/')[1].to_i, document[:reference].split('/')[2]]}
+                # If the reference is in format: C 81/1791/12
+                if documents[0][:reference].split('/').length == 2
+                    documents = documents.sort_by {|document| [document[:reference].split('/')[0], document[:reference].split('/')[1].to_i, document[:reference].split('/')[2]]}
+                else
+                    documents = documents.sort_by { |document| [document[:reference]] }
+                end
+                documents
             end
 
             # return document json from a document id
