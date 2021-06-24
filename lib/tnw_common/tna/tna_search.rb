@@ -3,7 +3,7 @@ module TnwCommon
         # This is a class to search TNA solr data
         # Usage:
         # solr_server = TnwCommon::Solr::SolrQuery.new('http://localhost:8983/solr/archbishops')
-        # tna_search = TnwCommon::Solr::Tna::TnaSearch.new(solr_server)
+        # tna_search = TnwCommon::Tna::TnaSearch.new(solr_server)
         # tna_search.get_document_ids_from_series('1257b485h')
         class TnaSearch
             def initialize(solr_server)
@@ -22,6 +22,21 @@ module TnwCommon
                 end
 
                 document_ids
+            end
+
+            # return document id/references from a series id, ordered by references
+            def get_ordered_documents_from_series(series_id)
+                documents = []
+
+                unless series_id.nil?
+                    q = "has_model_ssim:Document AND series_ssim:#{series_id}"
+                    @solr_server.query(q,'id,reference_tesim')['response']['docs'].map do |r|
+                        documents << {id: r['id'], reference: r['reference_tesim'][0]}
+                    end
+                end
+                documents.sort! { |a, b|  a[1].to_i <=> b[1].to_i }
+
+                documents = documents.sort_by {|document| [document[:reference].split('/')[1].to_i, document[:reference].split('/')[2]]}
             end
 
             # return document json from a document id

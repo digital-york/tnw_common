@@ -18,4 +18,11 @@ describe TnwCommon::Tna::TnaSearch do
     document_json = tna_search.get_document_json(nil)
     expect(document_json).to eq('')
   end
+
+  # get_ordered_documents_from_series
+  it 'has a get_ordered_documents_from_series method' do
+    # documents = tna_search.get_ordered_documents_from_series('1257b485h')
+    documents = tna_search.get_ordered_documents_from_series(nil)
+    expect(documents.length()).to eq(0)
+  end
 end
