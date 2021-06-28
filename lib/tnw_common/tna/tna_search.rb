@@ -36,10 +36,12 @@ module TnwCommon
                 end
 
                 # If the reference is in format: C 81/1791/12
-                if documents[0][:reference].split('/').length == 2
-                    documents = documents.sort_by {|document| [document[:reference].split('/')[0], document[:reference].split('/')[1].to_i, document[:reference].split('/')[2]]}
-                else
-                    documents = documents.sort_by { |document| [document[:reference]] }
+                unless documents.length()==0
+                    if documents[0][:reference].split('/').length == 2
+                        documents = documents.sort_by {|document| [document[:reference].split('/')[0], document[:reference].split('/')[1].to_i, document[:reference].split('/')[2]]}
+                    else
+                        documents = documents.sort_by { |document| [document[:reference]] }
+                    end
                 end
                 documents
             end

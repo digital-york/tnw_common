@@ -1,12 +1,12 @@
 module TnwCommon
     module Shared
         class Constants
-            FACET_REGISTER_OR_DEPARTMENT = "register_or_department_facet".freeze
-            FACET_DATE = "date_facet".freeze
-            FACET_SECTION_TYPE = "section_type_facet".freeze
-            FACET_SUBJECT = "subject_facet".freeze
-            FACET_PLACE_SAME_AS = "place_same_as_facet".freeze
-            FACET_PERSON_SAME_AS = "person_same_as_facet".freeze
+            FACET_REGISTER_OR_DEPARTMENT = "register_or_department_facet_ssim".freeze
+            FACET_DATE = "date_facet_ssim".freeze
+            FACET_SECTION_TYPE = "section_type_facet_ssim".freeze
+            FACET_SUBJECT = "subject_facet_ssim".freeze
+            FACET_PLACE_SAME_AS = "place_same_as_facet_ssim".freeze
+            FACET_PERSON_SAME_AS = "person_same_as_facet_ssim".freeze
 
             FACETS = {
                 FACET_REGISTER_OR_DEPARTMENT => "Register / Department",

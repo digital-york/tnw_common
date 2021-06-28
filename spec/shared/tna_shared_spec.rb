@@ -5,12 +5,12 @@ require 'tnw_common/shared/Constants'
 describe TnwCommon::Shared do
 
   it 'has FACETS defined' do
-    expect(TnwCommon::Shared::Constants::FACET_REGISTER_OR_DEPARTMENT).to eq("register_or_department_facet")
-    expect(TnwCommon::Shared::Constants::FACET_DATE).to eq("date_facet")
-    expect(TnwCommon::Shared::Constants::FACET_SECTION_TYPE).to eq("section_type_facet")
-    expect(TnwCommon::Shared::Constants::FACET_SUBJECT).to eq("subject_facet")
-    expect(TnwCommon::Shared::Constants::FACET_PLACE_SAME_AS).to eq("place_same_as_facet")
-    expect(TnwCommon::Shared::Constants::FACET_PERSON_SAME_AS).to eq("person_same_as_facet")
+    expect(TnwCommon::Shared::Constants::FACET_REGISTER_OR_DEPARTMENT).to eq("register_or_department_facet_ssim")
+    expect(TnwCommon::Shared::Constants::FACET_DATE).to eq("date_facet_ssim")
+    expect(TnwCommon::Shared::Constants::FACET_SECTION_TYPE).to eq("section_type_facet_ssim")
+    expect(TnwCommon::Shared::Constants::FACET_SUBJECT).to eq("subject_facet_ssim")
+    expect(TnwCommon::Shared::Constants::FACET_PLACE_SAME_AS).to eq("place_same_as_facet_ssim")
+    expect(TnwCommon::Shared::Constants::FACET_PERSON_SAME_AS).to eq("person_same_as_facet_ssim")
   end
 
   it 'has FACET LABELS defined' do
