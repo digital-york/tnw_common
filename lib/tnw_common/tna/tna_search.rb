@@ -10,6 +10,32 @@ module TnwCommon
                 @solr_server = solr_server
             end
 
+            # return department_label (will be used as facet label) from document_id
+            def get_department_label(document_id)
+                department_label = ""
+
+                unless document_id.nil?
+                    q = "has_model_ssim:Document AND id:#{document_id}"
+                    @solr_server.query(q,'id,series_ssim')['response']['docs'].map do |r|
+                        series_id = r['series_ssim'].length()==0?'' : r['series_ssim'][0]
+                        unless series_id == ''
+                            q2 = "has_model_ssim:Series AND id:#{series_id}"
+                            @solr_server.query(q2,'id,isPartOf_ssim')['response']['docs'].map do |r2|
+                                department_id = r2['isPartOf_ssim'][0]
+                                unless department_id == ''
+                                    q3 = "has_model_ssim:Department AND id:#{department_id}"
+                                    @solr_server.query(q3,'id,description_tesim')['response']['docs'].map do |r3|
+                                        department_label = r3['description_tesim'][0]
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+
+                department_label
+            end
+
             # return document ids from a series id
             def get_document_ids_from_series(series_id)
                 document_ids = []

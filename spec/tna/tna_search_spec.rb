@@ -25,4 +25,12 @@ describe TnwCommon::Tna::TnaSearch do
     documents = tna_search.get_ordered_documents_from_series(nil)
     expect(documents.length()).to eq(0)
   end
+
+  # get_department_label
+  it 'has a get_department_label method' do
+    # department_label = tna_search.get_department_label('dn39xd05s')
+    # expect(department_label).to eq('Chancery')
+    department_label = tna_search.get_department_label(nil)
+    expect(department_label).to eq('')
+  end
 end
