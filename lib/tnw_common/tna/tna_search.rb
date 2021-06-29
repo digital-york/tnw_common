@@ -86,6 +86,44 @@ module TnwCommon
 
                 document_json
             end
+
+            # get Place of Datings
+            def get_place_of_datings(document_id)
+                return nil if document_id.nil?
+
+                place_of_datings = []
+                q = "PlaceofDatingFor_ssim:#{document_id}"
+                fl = "id,place_same_as_facet_ssim,place_role_tesim,place_note_tesim,place_as_written_tesim"
+                @solr_server.query(q,fl)['response']['docs'].map do |r|
+                    place_of_datings << {
+                        "place_same_as": r["place_same_as_facet_ssim"],
+                        "place_role": r["place_role_tesim"],
+                        "place_note": r["place_note_tesim"],
+                        "place_as_written": r["place_as_written_tesim"]
+                    }
+                end
+
+                place_of_datings.to_json
+            end
+
+            # get Tna Places
+            def get_tna_places(document_id)
+                return nil if document_id.nil?
+
+                places = []
+                q = "tnaPlaceFor_ssim:#{document_id}"
+                fl = "id,place_same_as_facet_ssim,place_role_tesim,place_note_tesim,place_as_written_tesim"
+                @solr_server.query(q,fl)['response']['docs'].map do |r|
+                    places << {
+                        "place_same_as": r["place_same_as_facet_ssim"],
+                        "place_role": r["place_role_tesim"],
+                        "place_note": r["place_note_tesim"],
+                        "place_as_written": r["place_as_written_tesim"]
+                    }
+                end
+
+                places.to_json
+            end
         end
     end
 end

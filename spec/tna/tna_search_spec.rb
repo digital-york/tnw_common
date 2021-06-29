@@ -33,4 +33,20 @@ describe TnwCommon::Tna::TnaSearch do
     department_label = tna_search.get_department_label(nil)
     expect(department_label).to eq('')
   end
+
+  # get_place_of_dating
+  it 'has a get_place_of_dating method' do
+    # place_of_datings = tna_search.get_place_of_dating('dn39xd05s')
+    # puts place_of_datings
+    place_of_datings = tna_search.get_place_of_datings(nil)
+    expect(place_of_datings).to eq(nil)
+  end
+
+  # get_tna_places
+  it 'has a get_tna_places method' do
+    # places = tna_search.get_tna_places('dn39xd05s')
+    # puts places
+    places = tna_search.get_tna_places(nil)
+    expect(places).to eq(nil)
+  end
 end
