@@ -9,7 +9,7 @@ module TnwCommon
                 @conn = RSolr.connect :url => solr_url
             end
 
-            def query(q, fl='id', rows=10, sort='', start=0 )
+            def query(q, fl='id', rows=2147483647, sort='', start=0 )
                 @conn.get 'select', :params => {
                     :q=>q,
                     :fl=>fl,
