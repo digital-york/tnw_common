@@ -7,6 +7,13 @@ describe TnwCommon::Tna::TnaSearch do
   solr_server = TnwCommon::Solr::SolrQuery.new('http://localhost:8983/solr/archbishops')
   tna_search = TnwCommon::Tna::TnaSearch.new(solr_server)
 
+  #get_all_departments
+  it 'has a get_all_departments method' do
+    departments = tna_search.get_all_departments()
+    # puts departments
+    expect(departments.length()).to be_positive
+  end
+
   it 'has a get_document_ids_from_series method' do
     # document_ids = tna_search.get_document_ids_from_series('1257b485h')
     document_ids = tna_search.get_document_ids_from_series(nil)
