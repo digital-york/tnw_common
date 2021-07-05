@@ -22,6 +22,19 @@ module TnwCommon
                 departments.sort_by {|k, v| v}.to_h
             end
 
+            # get department desc from id
+            def get_department_desc(department_id)
+                department_desc = ""
+                return department_desc if department_id.nil?
+
+                q = "id:#{department_id}"
+                @solr_server.query(q,'id,description_tesim')['response']['docs'].map do |r|
+                    if r['description_tesim']
+                        department_desc = r['description_tesim'][0]
+                    end
+                end
+                department_desc
+            end
 
             # return department_label (will be used as facet label) from document_id
             def get_department_label(document_id)

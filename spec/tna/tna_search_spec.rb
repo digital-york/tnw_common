@@ -14,6 +14,14 @@ describe TnwCommon::Tna::TnaSearch do
     expect(departments.length()).to be_positive
   end
 
+  # get_department_desc
+  it 'has a get_department_desc method' do
+    # desc = tna_search.get_department_desc('6108vp64c')
+    # puts desc
+    desc = tna_search.get_department_desc(nil)
+    expect(desc).to eq('')
+  end
+
   it 'has a get_document_ids_from_series method' do
     # document_ids = tna_search.get_document_ids_from_series('1257b485h')
     document_ids = tna_search.get_document_ids_from_series(nil)
