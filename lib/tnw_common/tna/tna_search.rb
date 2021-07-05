@@ -22,6 +22,7 @@ module TnwCommon
                 departments.sort_by {|k, v| v}.to_h
             end
 
+
             # return department_label (will be used as facet label) from document_id
             def get_department_label(document_id)
                 department_label = ""
@@ -46,6 +47,25 @@ module TnwCommon
                 end
 
                 department_label
+            end
+
+            # return all series as array
+            # e.g.
+            # [
+            # ["5x21ts254", "C85", "Significations of Excommunication"],
+            # ["tx31qw845", "C49", "Parliamentary and Council Proceedings"],
+            # ]
+            def get_all_series(department_id)
+                series = []
+                return series if department_id.nil?
+
+                q = "isPartOf_ssim:#{department_id}"
+                @solr_server.query(q,'id,preflabel_tesim,description_tesim')['response']['docs'].map do |r|
+                    if r['id'] and r['preflabel_tesim'] and r['description_tesim']
+                        series.append([r['id'], r['preflabel_tesim'], r['description_tesim']])
+                    end
+                end
+                series.sort_by {|s| s[1]}
             end
 
             # return document ids from a series id

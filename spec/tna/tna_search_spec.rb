@@ -20,6 +20,14 @@ describe TnwCommon::Tna::TnaSearch do
     expect(document_ids.length()).to eq(0)
   end
 
+  # get_all_series
+  it 'has a get_all_series method' do
+    # series = tna_search.get_all_series('6108vp64c')
+    # puts series
+    series = tna_search.get_all_series(nil)
+    expect(series.length()).to eq(0)
+  end
+
   it 'has a get_document_json method' do
     # document_json = tna_search.get_document_json('gf06gf08h')
     document_json = tna_search.get_document_json(nil)
