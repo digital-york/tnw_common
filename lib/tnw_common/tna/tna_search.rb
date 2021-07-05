@@ -10,6 +10,18 @@ module TnwCommon
                 @solr_server = solr_server
             end
 
+            # return all departments as Hash (department_id => department_label)
+            def get_all_departments()
+                departments = Hash.new
+                q = "has_model_ssim:Department"
+                @solr_server.query(q,'id,description_tesim')['response']['docs'].map do |r|
+                    if r['id'] and r['description_tesim']
+                        departments[r['id']] = [r['description_tesim'][0]]
+                    end
+                end
+                departments.sort_by {|k, v| v}.to_h
+            end
+
             # return department_label (will be used as facet label) from document_id
             def get_department_label(document_id)
                 department_label = ""
