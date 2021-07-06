@@ -75,10 +75,12 @@ module TnwCommon
                 q = "isPartOf_ssim:#{department_id}"
                 @solr_server.query(q,'id,preflabel_tesim,description_tesim')['response']['docs'].map do |r|
                     if r['id'] and r['preflabel_tesim'] and r['description_tesim']
-                        series.append([r['id'], r['preflabel_tesim'], r['description_tesim']])
+                        # series.append([r['id'], r['preflabel_tesim'], r['description_tesim']])
+                        series.append([r['preflabel_tesim'][0] + ' - ' + r['description_tesim'][0], r['id']])
                     end
                 end
-                series.sort_by {|s| s[1]}
+                # only order by the containing numbers in the series label
+                series.sort_by {|s| s[0].scan(/\d+/)[0].to_i}
             end
 
             # return document ids from a series id
