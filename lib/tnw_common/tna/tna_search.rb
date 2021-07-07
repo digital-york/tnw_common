@@ -139,7 +139,7 @@ module TnwCommon
                 return nil if document_id.nil?
 
                 place_of_datings = []
-                q = "PlaceofDatingFor_ssim:#{document_id}"
+                q = "placeOfDatingFor_ssim:#{document_id}"
                 fl = "id,place_same_as_facet_ssim,place_role_tesim,place_note_tesim,place_as_written_tesim"
                 @solr_server.query(q,fl)['response']['docs'].map do |r|
                     place_of_datings << {
@@ -150,7 +150,7 @@ module TnwCommon
                     }
                 end
 
-                place_of_datings.to_json
+                place_of_datings
             end
 
             # get Tna Places
@@ -169,7 +169,7 @@ module TnwCommon
                     }
                 end
 
-                places.to_json
+                places
             end
         end
     end
