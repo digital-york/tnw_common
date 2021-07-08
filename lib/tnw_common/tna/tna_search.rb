@@ -171,6 +171,36 @@ module TnwCommon
 
                 places
             end
+
+            # get dates
+            def get_dates(document_id)
+                return nil if document_id.nil?
+
+                dates = []
+                # Step 1: find latest DocumentDate
+                q = "documentDateFor_ssim:#{document_id}"
+                fl = "id"
+                document_date_id = ''
+                @solr_server.query(q, fl, 1, 'system_modified_dtsi desc')['response']['docs'].map do |r|
+                    document_date_id = r['id']
+                end
+
+                return [] if document_date_id==''
+
+                # Step 2: find single dates linked to the DocumentDate found in step 1
+                q2 = "dateFor_ssim:#{document_date_id}"
+                fl2 = "id,date_tesim,date_certainty_tesim,date_type_tesim,date_facet_ssim"
+                @solr_server.query(q2, fl2)['response']['docs'].map do |r|
+                    dates << {
+                        "date": r["date_tesim"],
+                        "certainty": r["date_certainty_tesim"],
+                        "type": r["date_type_tesim"],
+                        "facet": r["date_facet_ssim"]
+                    }
+                end
+
+                dates
+            end
         end
     end
 end

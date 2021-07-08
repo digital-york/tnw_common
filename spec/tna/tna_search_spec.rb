@@ -72,4 +72,12 @@ describe TnwCommon::Tna::TnaSearch do
     places = tna_search.get_tna_places(nil)
     expect(places).to eq(nil)
   end
+
+  # get_dates
+  it 'has a get_dates method' do
+    dates = tna_search.get_dates('dn39xd05s')
+    puts dates
+    dates = tna_search.get_dates(nil)
+    expect(dates).to eq(nil)
+  end
 end
