@@ -172,6 +172,54 @@ module TnwCommon
                 places
             end
 
+            # get Tna Addressees
+            def get_tna_addressees(document_id)
+                return nil if document_id.nil?
+
+                addressees = []
+                q = "addresseeFor_ssim:#{document_id}"
+                fl = "id,person_as_written_tesim"
+                @solr_server.query(q,fl)['response']['docs'].map do |r|
+                    addressees << {
+                        "person_as_written": r["person_as_written_tesim"]
+                    }
+                end
+
+                addressees
+            end
+
+            # get Tna Senders
+            def get_tna_senders(document_id)
+                return nil if document_id.nil?
+
+                senders = []
+                q = "senderFor_ssim:#{document_id}"
+                fl = "id,person_as_written_tesim"
+                @solr_server.query(q,fl)['response']['docs'].map do |r|
+                    senders << {
+                        "person_as_written": r["person_as_written_tesim"]
+                    }
+                end
+
+                senders
+            end
+
+            # get Tna Persons
+            def get_tna_persons(document_id)
+                return nil if document_id.nil?
+
+                persons = []
+                q = "personFor_ssim:#{document_id}"
+                fl = "id,person_as_written_tesim"
+                @solr_server.query(q,fl)['response']['docs'].map do |r|
+                    persons << {
+                        "person_as_written": r["person_as_written_tesim"]
+                    }
+                end
+
+                persons
+            end
+
             # get dates
             def get_dates(document_id)
                 return nil if document_id.nil?

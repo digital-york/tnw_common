@@ -73,6 +73,30 @@ describe TnwCommon::Tna::TnaSearch do
     expect(places).to eq(nil)
   end
 
+  # get_tna_addressees
+  it 'has a get_tna_addressees method' do
+    # places = tna_search.get_tna_addressees('dn39xd05s')
+    # puts addressees
+    addressees = tna_search.get_tna_addressees(nil)
+    expect(addressees).to eq(nil)
+  end
+
+  # get_tna_senders
+  it 'has a get_tna_senders method' do
+    # senders = tna_search.get_tna_senders('dn39xd05s')
+    # puts senders
+    senders = tna_search.get_tna_senders(nil)
+    expect(senders).to eq(nil)
+  end
+
+  # get_tna_persons
+  it 'has a get_tna_persons method' do
+    # persons = tna_search.get_tna_persons('dn39xd05s')
+    # puts persons
+    persons = tna_search.get_tna_persons(nil)
+    expect(persons).to eq(nil)
+  end
+
   # get_dates
   it 'has a get_dates method' do
     dates = tna_search.get_dates('dn39xd05s')
