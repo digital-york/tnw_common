@@ -34,6 +34,7 @@ module TnwCommon
             SOLR_FILED_COMMON_NOTE_TESIM = "note_tesim".freeze
             SOLR_FILED_COMMON_PLACE_AS_WRITTEN_TESIM = "place_as_written_tesim".freeze
             SOLR_FILED_COMMON_PLACE_SAME_AS_SEARCH = "place_same_as_search".freeze
+            SOLR_FILED_COMMON_PLACE_SAME_AS_TESIM= "place_same_as_tesim".freeze
             SOLR_FILED_COMMON_REPOSITORY_TESIM = "repository_tesim".freeze
             SOLR_FILED_COMMON_SUBJECT_SEARCH = "subject_search".freeze
             SOLR_FILED_COMMON_SUMMARY_SEARCH = "summary_search".freeze
