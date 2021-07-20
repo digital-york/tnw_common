@@ -43,15 +43,17 @@ module TnwCommon
                 unless document_id.nil?
                     q = "has_model_ssim:Document AND id:#{document_id}"
                     @solr_server.query(q,'id,series_ssim')['response']['docs'].map do |r|
-                        series_id = r['series_ssim'].length()==0?'' : r['series_ssim'][0]
-                        unless series_id == ''
-                            q2 = "has_model_ssim:Series AND id:#{series_id}"
-                            @solr_server.query(q2,'id,isPartOf_ssim')['response']['docs'].map do |r2|
-                                department_id = r2['isPartOf_ssim'][0]
-                                unless department_id == ''
-                                    q3 = "has_model_ssim:Department AND id:#{department_id}"
-                                    @solr_server.query(q3,'id,description_tesim')['response']['docs'].map do |r3|
-                                        department_label = r3['description_tesim'][0]
+                        unless r['series_ssim'].nil?
+                            series_id = r['series_ssim'].length()==0?'' : r['series_ssim'][0]
+                            unless series_id == ''
+                                q2 = "has_model_ssim:Series AND id:#{series_id}"
+                                @solr_server.query(q2,'id,isPartOf_ssim')['response']['docs'].map do |r2|
+                                    department_id = r2['isPartOf_ssim'][0]
+                                    unless department_id == ''
+                                        q3 = "has_model_ssim:Department AND id:#{department_id}"
+                                        @solr_server.query(q3,'id,description_tesim')['response']['docs'].map do |r3|
+                                            department_label = r3['description_tesim'][0]
+                                        end
                                     end
                                 end
                             end
