@@ -41,7 +41,7 @@ module TnwCommon
 
             # Solr fields for TNA only
             SOLR_FILED_TNA_ADDRESSEES_TESIM = "tna_addressees_tesim".freeze
-            SOLR_FILED_TNA_DOCUMENT_TYPE_SSIM = "document_type_facet_ssim".freeze
+            SOLR_FILED_TNA_DOCUMENT_TYPE_TESIM = "document_type_tesim".freeze
             SOLR_FILED_TNA_PERSONS_TESIM = "tna_persons_tesim".freeze
             SOLR_FILED_TNA_PUBLICATION_TESIM = "publication_tesim".freeze
             SOLR_FILED_TNA_REFERENCE_TESIM = "reference_tesim".freeze
