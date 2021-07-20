@@ -29,6 +29,7 @@ module TnwCommon
             SOLR_FIELD_COMMON_ENTRY_DATE_NOTE_SEARCH = "entry_date_note_search".freeze
             SOLR_FIELD_COMMON_ENTRY_DATE_NOTE_TESIM = "entry_date_note_tesim".freeze
             SOLR_FIELD_COMMON_ENTRY_TYPE_SEARCH = "entry_type_search".freeze
+            SOLR_FILED_COMMON_LANGUAGE_NEW = "language_new_tesim".freeze
             SOLR_FILED_COMMON_LANGUAGE_SEARCH = "language_search".freeze
             SOLR_FILED_COMMON_NOTE_SEARCH = "note_search".freeze
             SOLR_FILED_COMMON_NOTE_TESIM = "note_tesim".freeze
