@@ -24,7 +24,8 @@ module TnwCommon
             }.freeze
 
             # Common Solr fields for both AR and TNA
-            SOLR_FILED_COMMON_DATE_FULL_SSIM = "date_full_ssim".freeze
+            SOLR_FILED_COMMON_DATE_ALL_SSIM = "date_ssim".freeze # save all full dates into this field
+            SOLR_FILED_COMMON_DATE_FULL_SSIM = "date_full_ssim".freeze # save the first date into this field as it's used for ordering
             SOLR_FIELD_COMMON_ENTRY_DATE_NOTE_TESIM = "entry_date_note_tesim".freeze
             SOLR_FIELD_COMMON_ENTRY_TYPE_SEARCH = "entry_type_search".freeze
             SOLR_FILED_COMMON_LANGUAGE_SEARCH = "language_search".freeze
