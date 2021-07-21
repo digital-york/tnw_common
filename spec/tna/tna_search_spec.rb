@@ -49,6 +49,14 @@ describe TnwCommon::Tna::TnaSearch do
     expect(documents.length()).to eq(0)
   end
 
+  # get_ordered_documents_from_series_in_year_group
+  it 'has a get_ordered_documents_from_series_in_year_group method' do
+    # documents = tna_search.get_ordered_documents_from_series_in_year_group('1257b485h')
+    # puts documents
+    documents = tna_search.get_ordered_documents_from_series_in_year_group(nil)
+    expect(documents).to eq(nil)
+  end
+
   # get_department_label
   it 'has a get_department_label method' do
     # department_label = tna_search.get_department_label('dn39xd05s')
@@ -99,8 +107,8 @@ describe TnwCommon::Tna::TnaSearch do
 
   # get_dates
   it 'has a get_dates method' do
-    dates = tna_search.get_dates('dn39xd05s')
-    puts dates
+    # dates = tna_search.get_dates('dn39xd05s')
+    # puts dates
     dates = tna_search.get_dates(nil)
     expect(dates).to eq(nil)
   end

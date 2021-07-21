@@ -121,6 +121,47 @@ module TnwCommon
                 documents
             end
 
+            # return document id/references from a series id, ordered by references
+            def get_ordered_documents_from_series_in_year_group(series_id)
+                return nil if series_id.nil?
+
+                documents_in_year_group = {}
+
+                unless series_id.nil?
+                    q = "has_model_ssim:Document AND series_ssim:#{series_id}"
+                    @solr_server.query(q,'id,reference_tesim,date_facet_ssim')['response']['docs'].map do |r|
+                        current_year = r['date_facet_ssim'][0]
+                        current_documents = []
+                        if documents_in_year_group[current_year].nil?
+                            documents_in_year_group[current_year] = current_documents
+                        else
+                            current_documents = documents_in_year_group[current_year]
+                        end
+                        current_documents << {id: r['id'], year: current_year, reference: r['reference_tesim'][0]}
+                    end
+                end
+
+                # If the reference is in format: C 81/1791/12
+                unless documents_in_year_group.length()==0
+                    documents_in_year_group.each do |year, documents|
+                        if documents[0][:reference].split('/').length == 2
+                            documents.sort_by! {|document| [document[:reference].split('/')[0], document[:reference].split('/')[1].to_i, document[:reference].split('/')[2]]}
+                        else
+                            documents.sort_by! { |document| [document[:reference]] }
+                        end
+                    end
+                end
+                #
+                # if (not year.nil?) and (not documents_in_year_group[year].empty?)
+                #     return documents_in_year_group[year]
+                # else
+                #     return documents_in_year_group.values[0] # return the first value by default
+                # end
+
+                documents_in_year_group
+
+            end
+
             # return document json from a document id
             def get_document_json(document_id)
                 document_json = ''
