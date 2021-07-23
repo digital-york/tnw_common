@@ -51,10 +51,11 @@ describe TnwCommon::Tna::TnaSearch do
 
   # get_ordered_documents_from_series_in_year_group
   it 'has a get_ordered_documents_from_series_in_year_group method' do
-    # documents = tna_search.get_ordered_documents_from_series_in_year_group('1257b485h')
-    # puts documents
-    documents = tna_search.get_ordered_documents_from_series_in_year_group(nil)
-    expect(documents).to eq(nil)
+    # all_documents, document_hash = tna_search.get_ordered_documents_from_series_in_year_group('1257b485h')
+    # puts all_documents
+    all_documents, document_hash = tna_search.get_ordered_documents_from_series_in_year_group(nil)
+    expect(all_documents).to eq(nil)
+    expect(document_hash).to eq(nil)
   end
 
   # get_department_label

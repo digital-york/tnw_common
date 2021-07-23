@@ -123,8 +123,9 @@ module TnwCommon
 
             # return document id/references from a series id, ordered by references
             def get_ordered_documents_from_series_in_year_group(series_id)
-                return nil if series_id.nil?
+                return nil, nil if series_id.nil?
 
+                all_documents = []
                 documents_in_year_group = {}
 
                 unless series_id.nil?
@@ -138,6 +139,7 @@ module TnwCommon
                             current_documents = documents_in_year_group[current_year]
                         end
                         current_documents << {id: r['id'], year: current_year, reference: r['reference_tesim'][0]}
+                        all_documents << {id: r['id'], year: current_year, reference: r['reference_tesim'][0]}
                     end
                 end
 
@@ -150,6 +152,11 @@ module TnwCommon
                             documents.sort_by! { |document| [document[:reference]] }
                         end
                     end
+                    if all_documents[0][:reference].split('/').length == 2
+                        all_documents.sort_by! {|document| [document[:reference].split('/')[0], document[:reference].split('/')[1].to_i, document[:reference].split('/')[2]]}
+                    else
+                        all_documents.sort_by! { |document| [document[:reference]] }
+                    end
                 end
                 #
                 # if (not year.nil?) and (not documents_in_year_group[year].empty?)
@@ -158,7 +165,7 @@ module TnwCommon
                 #     return documents_in_year_group.values[0] # return the first value by default
                 # end
 
-                documents_in_year_group
+                return all_documents, documents_in_year_group
 
             end
 
