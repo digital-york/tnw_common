@@ -147,13 +147,13 @@ module TnwCommon
                 unless documents_in_year_group.length()==0
                     documents_in_year_group.each do |year, documents|
                         if documents[0][:reference].split('/').length == 2
-                            documents.sort_by! {|document| [document[:reference].split('/')[0], document[:reference].split('/')[1].to_i, document[:reference].split('/')[2]]}
+                            documents.sort_by! {|document| [document[:reference].split('/')[0], document[:reference].split('/')[1].to_i, document[:reference].split('/')[2].to_i]}
                         else
                             documents.sort_by! { |document| [document[:reference]] }
                         end
                     end
                     if all_documents[0][:reference].split('/').length == 2
-                        all_documents.sort_by! {|document| [document[:reference].split('/')[0], document[:reference].split('/')[1].to_i, document[:reference].split('/')[2]]}
+                        all_documents.sort_by! {|document| [document[:reference].split('/')[0], document[:reference].split('/')[1].to_i, document[:reference].split('/')[2].to_i]}
                     else
                         all_documents.sort_by! { |document| [document[:reference]] }
                     end
