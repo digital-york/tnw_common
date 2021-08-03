@@ -144,22 +144,22 @@ module TnwCommon
                 end
 
                 # If the reference is in format: C 81/1791/12
-                unless documents_in_year_group.length()==0
-                    documents_in_year_group.each do |year, documents|
-                        if documents[0][:reference].split('/').length == 2
-                            # documents.sort_by! {|document| [document[:reference].split('/')[0], document[:reference].split('/')[1].to_i, document[:reference].split('/')[2].to_i]}
-                            documents.sort_by! {|document| (document[:reference].split[1].split('/')[1] + '.' + document[:reference].split[1].split('/')[2]).to_f}
-                        else
-                            documents.sort_by! { |document| [document[:reference]] }
-                        end
-                    end
-                    if all_documents[0][:reference].split('/').length == 2
-                        # all_documents.sort_by! {|document| [document[:reference].split('/')[0], document[:reference].split('/')[1].to_i, document[:reference].split('/')[2].to_i]}
-                        all_documents.sort_by! {|document| (document[:reference].split[1].split('/')[1] + '.' + document[:reference].split[1].split('/')[2]).to_f}
-                    else
-                        all_documents.sort_by! { |document| [document[:reference]] }
-                    end
-                end
+                # unless documents_in_year_group.length()==0
+                #     documents_in_year_group.each do |year, documents|
+                #         if documents[0][:reference].split('/').length == 2
+                #             # documents.sort_by! {|document| [document[:reference].split('/')[0], document[:reference].split('/')[1].to_i, document[:reference].split('/')[2].to_i]}
+                #             documents.sort_by! {|document| (document[:reference].split[1].split('/')[1] + '.' + document[:reference].split[1].split('/')[2]).to_f}
+                #         else
+                #             documents.sort_by! { |document| [document[:reference]] }
+                #         end
+                #     end
+                #     if all_documents[0][:reference].split('/').length == 2
+                #         # all_documents.sort_by! {|document| [document[:reference].split('/')[0], document[:reference].split('/')[1].to_i, document[:reference].split('/')[2].to_i]}
+                #         all_documents.sort_by! {|document| (document[:reference].split[1].split('/')[1] + '.' + document[:reference].split[1].split('/')[2]).to_f}
+                #     else
+                #         all_documents.sort_by! { |document| [document[:reference]] }
+                #     end
+                # end
                 #
                 # if (not year.nil?) and (not documents_in_year_group[year].empty?)
                 #     return documents_in_year_group[year]
