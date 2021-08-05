@@ -131,7 +131,12 @@ module TnwCommon
                 unless series_id.nil?
                     q = "has_model_ssim:Document AND series_ssim:#{series_id}"
                     @solr_server.query(q,'id,reference_tesim,date_facet_ssim')['response']['docs'].map do |r|
-                        current_year = r['date_facet_ssim'][0]
+                        current_year = 'none'
+                        begin
+                            current_year = r['date_facet_ssim'][0]
+                        rescue
+                        end
+
                         current_documents = []
                         if documents_in_year_group[current_year].nil?
                             documents_in_year_group[current_year] = current_documents
