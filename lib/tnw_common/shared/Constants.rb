@@ -36,7 +36,7 @@ module TnwCommon
             SOLR_FILED_COMMON_PLACE_AS_WRITTEN_SEARCH = "person_as_written_search".freeze
             SOLR_FILED_COMMON_PLACE_AS_WRITTEN_TESIM = "place_as_written_tesim".freeze
             SOLR_FILED_COMMON_PLACE_SAME_AS_SEARCH = "place_same_as_search".freeze
-            SOLR_FILED_COMMON_PLACE_SAME_AS_SEARCH_TESIM = "place_same_as_new_tesim".freeze # new field for imaprtial search
+            SOLR_FILED_COMMON_PLACE_SAME_AS_NEW_TESIM = "place_same_as_new_tesim".freeze # new field for imaprtial search
             SOLR_FILED_COMMON_PLACE_SAME_AS_TESIM= "place_same_as_tesim".freeze
             SOLR_FILED_COMMON_REPOSITORY_TESIM = "repository_tesim".freeze
             SOLR_FILED_COMMON_SUBJECT_NEW_TESIM = "subject_new_tesim".freeze
